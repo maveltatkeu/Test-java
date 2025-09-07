@@ -1,7 +1,15 @@
-package testing;
+package org.example;
 
-import org.example.Calculator;
-import org.junit.jupiter.api.*;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -12,36 +20,43 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
+@Tag("ConversionTests") // (1)
+@DisplayName("Réussir à convertir entre différentes unités.") // (2)
+@ExtendWith(LoggingExtension.class)
 class CalculatorTest {
 
   private static Instant startedAt;
   private Calculator calculator;
+  private Logger logger;
 
   @BeforeAll
-  static void beforeAll() {
+  public static void beforeAll() {
     System.out.println("@BeforeAll");
     startedAt = Instant.now();
   }
 
   @AfterAll
-  static void afterAll() {
+  public static void afterAll() {
     System.out.println("@AfterAll");
     Instant finished = Instant.now();
     long elapsed = Duration.between(startedAt, finished).toMillis();
     System.out.println("Elapsed: " + elapsed + " ms");
   }
 
+  public void setLogger(Logger logger) {
+    this.logger = logger;
+  }
+
   @BeforeEach
   public void setup() {
-    System.out.println("Starting Calculator Test");
+    logger.info("Starting Calculator Test");
     calculator = new Calculator();
   }
 
   @AfterEach
   public void tearDown() {
-    System.out.println("Finished ==> Calculator Test");
+    logger.info("Finished ==> Calculator Test");
     calculator = null;
   }
 
@@ -72,6 +87,8 @@ class CalculatorTest {
   }
 
   @Test
+  @Tag("QuatreOperations")
+    // ce test fait partie des tests des 4 opérations de base
   void testAddTwoPositiveNumbers() {
     // Arrange
     int a = 2;
@@ -85,6 +102,8 @@ class CalculatorTest {
   }
 
   @Test
+  @Tag("QuatreOperations")
+    // ce test fait partie des tests des 4 opérations de base
   void testAddTwoNegativeNumbers() {
     // Arrange
     int a = -2;
@@ -98,6 +117,8 @@ class CalculatorTest {
   }
 
   @Test
+  @Tag("QuatreOperations")
+    // ce test fait partie des tests des 4 opérations de base
   void testAddTwoZeroNumbers() {
     //Arrange
     int a = 0;
@@ -112,6 +133,8 @@ class CalculatorTest {
   }
 
   @Test
+  @Tag("QuatreOperations")
+    // ce test fait partie des tests des 4 opérations de base
   void testMultiplyTwoPositiveNumbers() {
     //Arrange
     int a = 3;
